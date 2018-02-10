@@ -1,5 +1,7 @@
 # --*-- coding: utf-8 --*--
-
+"""
+数据库操作文件
+"""
 import datetime
 import hashlib
 from sqlalchemy import desc

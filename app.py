@@ -1,14 +1,15 @@
 import os
-import tornado.ioloop
-import tornado.web
-import tornado.locale
-import tornado.escape
-from tornado.options import define, options
+
+import tornado.ioloop  # 核心IO循环模块
+import tornado.web  # 基础WEB框架
+import tornado.locale  # 本地化支持
+import tornado.escape  # XHTML, JSON, URL的编解码
+from tornado.options import define, options  # 命令行和配置文件解析工具
 
 import uimodules
-from config import ITEMS_NUM_PERPAGE, TIME_LIMIT
+from config import ITEMS_NUM_PERPAGE, TIME_LIMIT  # 分页，页面info显示时间限制
 
-from db_access import *
+from db_access import *  # 数据库操作文件
 
 define("port", default=8888, help="run on the given port", type=int)
 define("debug", default=True, type=bool)
@@ -75,8 +76,10 @@ class RegisterHandler(tornado.web.RequestHandler):
 
 
 class LoginHandler(tornado.web.RequestHandler):
+
     def get(self):
         self.render("login.html")
+
     def post(self):
         email = self.get_argument("email")
         password = self.get_argument("password")

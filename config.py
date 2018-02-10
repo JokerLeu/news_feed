@@ -1,5 +1,7 @@
 # --*-- coding: utf-8 --*--
-
+"""
+配置文件
+"""
 
 # MYSQL配置
 DB = {
@@ -7,12 +9,11 @@ DB = {
     'PORT': 3306,
     'DB_NAME': 'news_feed',
     'USER': '',
-    'PASSWORD' : ''
+    'PASSWORD': ''
 }
 
 
 # 发送邮件的邮箱设置
-
 EMAIL = {
     'from_addr': '',
     'password': '',

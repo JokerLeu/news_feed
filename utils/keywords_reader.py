@@ -4,12 +4,12 @@
 """
 import sys
 import os
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+
+from docs.keyword_list import DISTRICT_LIST  # 关键字列表之区域列表
+from db_access import create_keyword  # 数据库创建关键字
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(BASE_DIR)
-
-from docs.keyword_list import DISTRICT_LIST
-from db_access import create_keyword
-
 
 for k in DISTRICT_LIST:
     for i in [k["中文名称"], k["英文名称"]]:

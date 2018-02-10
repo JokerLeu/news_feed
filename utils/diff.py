@@ -1,6 +1,8 @@
 # coding=utf-8
-
-import difflib
+"""
+返回两字段的区别
+"""
+import difflib  # 标准库：比较序列
 
 
 def diff_file(lines1, lines2):

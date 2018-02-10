@@ -1,4 +1,7 @@
 # --*-- coding: utf-8 --*--
+"""
+实用工具：发送邮件。可手动发送
+"""
 import time
 
 from utils.gen_email_msg import gen_message

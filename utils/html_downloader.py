@@ -1,28 +1,36 @@
 # coding=utf-8
-
-import requests
+"""
+下载网页
+"""
+import requests  # 网络请求模块
 
 import os
 import sys
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(BASE_DIR)
 from utils.log import log, ERROR
 
 
 def save_html(content):
-    with open('2.html', 'w', encoding='utf-8') as f:
-        f.write(content)
+    with open('2.html', 'w', encoding='utf-8') as f:  # 只写打开文件
+        f.write(content)  # 写内容
 
 
 def crawl(url):
+    """
+    爬虫
+    """
+    # 创建会话
     s = requests.session()
+    # 请求头部信息
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
     }
+    # 返回响应信息
     response = s.get(url, headers=headers, timeout=30)
     if response.status_code == 200:
-        text = response.text
-        encoding = response.encoding
+        text = response.text  # 内容
+        encoding = response.encoding  # 编码
         apparent_encoding = response.apparent_encoding
 
         if encoding not in ['utf-8', 'UTF-8']:
@@ -49,9 +57,6 @@ def crawl(url):
     return False
 
 
-
-
-
 if __name__ == '__main__':
     # crawl('http://www.xxcig.com/xwzx/index.htm')
     # crawl('http://www.hnair.com/guanyuhaihang/hhxw/hhxw/')
@@ -60,4 +65,3 @@ if __name__ == '__main__':
     # crawl('http://www.ausnutria.com.hk/en/ir/news.php')
     # crawl("http://www.ccland.com.hk/big5/media/press.php")
     crawl("http://www.magang.com.hk/eng/announcement.asp")
-

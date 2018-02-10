@@ -1,37 +1,47 @@
+"""
+用于初始化数据库表，需提前在config.py中配置数据库
+"""
 import os
 import sys
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
-sys.path.append(BASE_DIR)
 
-from config import DB
-from sqlalchemy import ForeignKey
-from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Sequence
-from sqlalchemy import func
+from sqlalchemy import ForeignKey  # 外键类
+from sqlalchemy import create_engine  # 创建数据库表引擎方法
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Sequence  # 表项的类型
+from sqlalchemy import func  # 函数
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
+from config import DB  # 导入数据库配置
+
+# 绝对路径（路径添加（文件路径 /or\, ..）
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+# 添加系统的环境变量
+sys.path.append(BASE_DIR)
+# 创建数据库引擎实例
 engine = create_engine('mysql+mysqldb://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}?charset=utf8'.format(
     USERNAME=DB['USER'],
     PASSWORD=DB['PASSWORD'],
     HOST=DB['HOST'],
     PORT=DB['PORT'],
     DB_NAME=DB['DB_NAME'],
-), convert_unicode=True, echo=False)
-
-
+), convert_unicode=True, echo=False)  # 不返回SQL语句,调试用
+# 创建数据库会话（数据库工厂（自动提交，自动设置，引擎实例））
 DBSession = scoped_session(sessionmaker(autocommit=True, autoflush=False, bind=engine))
-Base = declarative_base()
-Base.query = DBSession.query_property()
 
+Base = declarative_base()  # 数据库模型基类
+Base.query = DBSession.query_property()
 Base = declarative_base()
+
 
 def init_db(db_engine):
-  Base.metadata.create_all(bind=db_engine)
-  # Base.metadata.tables["log"].create(bind=db_engine)
+    """
+    数据库初始化函数
+    """
+    Base.metadata.create_all(bind=db_engine)  # 创建所有继承于Base的数据表
+    # Base.metadata.tables["log"].create(bind=db_engine)
 
 
-class User(Base):
+class User(Base):  # 继承于Base
     __tablename__ = 'user'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     username = Column(String(128))
@@ -71,12 +81,11 @@ class CompanyProfle(Base):
     stock_code = Column(String(128))
 
 
-
 class Website(Base):
     __tablename__ = 'website'
     id = Column(Integer, Sequence('website_id_seq'), primary_key=True)
     url = Column(String(1024))
-    company_id  = Column(Integer, ForeignKey('company.id'))
+    company_id = Column(Integer, ForeignKey('company.id'))
     company = relationship("Company", back_populates="website")
     info_feed = relationship("InfoFeed", back_populates="website")
     html_content = relationship("HtmlContent", uselist=False, back_populates="website")
@@ -122,14 +131,14 @@ class ContactPerson(Base):
     __tablename__ = 'contact_person'
     id = Column(Integer, Sequence('contact_id_seq'), primary_key=True)
     company_id = Column(Integer, ForeignKey('company.id'))
-    name = Column(String(1024)) #姓名
+    name = Column(String(1024))  # 姓名
     gender = Column(String(1024))  # 性别
     age = Column(Integer)
-    position = Column(String(1024)) #职位
-    phone_number = Column(String(1024)) #电话
-    wechat = Column(String(1024)) #微信
-    email = Column(String(1024)) #邮箱
-    comment = Column(String(1024)) #备注
+    position = Column(String(1024))  # 职位
+    phone_number = Column(String(1024))  # 电话
+    wechat = Column(String(1024))  # 微信
+    email = Column(String(1024))  # 邮箱
+    comment = Column(String(1024))  # 备注
     create_at = Column(DateTime(timezone=True), default=func.now())
 
 
@@ -137,7 +146,7 @@ class Report(Base):
     """
     标题 导语 作者 责任编辑 关键字 正文
     """
-    __tablename__ = 'report'
+    __tablename__ = 'report'  # 表名
     id = Column(Integer, Sequence('report_id_seq'), primary_key=True)
     title = Column(String(1024))
     lead = Column(Text)
@@ -157,14 +166,6 @@ class CrawlerLOG(Base):
     create_at = Column(DateTime(timezone=True), default=func.now())
 
 
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    init_db(engine)
+    init_db(engine)  # 初始化数据库
     # pass

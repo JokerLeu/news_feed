@@ -1,14 +1,18 @@
 # --*-- coding: utf-8 --*--
+"""
+读取excel，并导入数据库文件
+"""
 import sys
 import os
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+import openpyxl  # excel读写模块
+from db_access import create_company, create_website  # 数据库操作生成公司名，生成网站
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(BASE_DIR)
 
-import openpyxl
-from db_access import create_company, create_website
+wb = openpyxl.load_workbook('../docs/swiftwire.xlsx')  # 载入文件
 
-wb = openpyxl.load_workbook('../docs/swiftwire.xlsx')
 
 def sheet01():
     sheet = wb.get_sheet_by_name("原有公司")
